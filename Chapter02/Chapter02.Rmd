@@ -1,3 +1,9 @@
+---
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
 # Chapter 02 - Predicting Algae Blooms
 
 O objetivo deste estudo é realizar a predição de expansão de algas em rios da Europa.
@@ -77,6 +83,28 @@ A parte de baixo do histograna mostra a distribuição dos dados. Ali é possív
 
 o QQ Plot mostra a distribuição normal (linha contínua azul) e um intervalo de confiança de 95% (linha tracejada azul). Note que alguns valores baixos estão fora do intervalo de confiança da distribuição normal.
 
-paramos na p. 47, vamos fazer o boxplot.
+Outra possibilidade é criar um Boxplot, que permite uma rápida visualização da distribuição dos dados, a posição da mediana, os quartis e eventuais outliers.
+
+```{r}
+boxplot(algae$oPO4, ylab = "Ortofosfato - oP04")
+rug(jitter(algae$oPO4), side = 2) # "rug" gera os "risquinhos" ao lado do gráfico, mostram o espalhamento dos dados; "jitter" melhora a visualização destes risquinhos, evitando a sobreposição deles; side = 2 é o eixo Y.
+abline(h = mean(algae$oPO4, na.rm = T), lty = 2) # essa linha contendo a média permite a comparação com a mediana, no caso, o descasamento das duas mostra o efeito dos outliers na amostra.
+
+```
+## Analisando outliers
+
+```{r}
+plot(algae$NH4, xlab = "") # plota os pontos
+abline(h = mean(algae$NH4, na.rm = T), lty = 1) # linha de média (contínua)
+abline(h = mean(algae$NH4, na.rm = T) + sd(algae$NH4, na.rm = T), lty = 2) # linha de média + 1 desvio padrão (tracejado maior)
+abline(h = median(algae$NH4, na.rm = T), lty = 3) # linha de mediana (tracejado menor)
+```
+
+O plot permite visualizar, o comando abaixo permite saber em qual linha está ou estão os outliers.
+
+```{r}
+algae[algae$NH4 > 15000, ]
+```
+
 
 
