@@ -105,6 +105,6 @@ O plot permite visualizar, o comando abaixo permite saber em qual linha está ou
 ```{r}
 algae[algae$NH4 > 15000, ]
 ```
-
+parei na página 49 (63)
 
 
