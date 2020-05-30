@@ -1,6 +1,82 @@
 # Chapter 02 - Predicting Algae Blooms
+
 O objetivo deste estudo é realizar a predição de expansão de algas em rios da Europa.
+
 Foram coletadas diversas amostras de água em rios da Europa, durante aproximadamente um ano. Foram medidas diferentes propriedades químicas e a frequêncida de ocorrência de 7 tipos prejudiciais de algas. Outros dados foram, ainda, incluídos, como estação do ano, dimensão e velocidade do rio.
+
 Como a coleta e análise de propriedades químicas do rio pode ser feita de forma automática, rápida e barata e a análise biológica para identificar algas envolve pessoal altamente treinando, além de ser cara e lenta, a obtenção de modelos de predição do crescimento das algas a partir de parâmetros químicos é bastante oportuna.
+
+## Os dados
+
+Existem 2 datasets para esta análise. O primeiro possui 200 amostras com as seguintes variáveis:
+
+* Estação do ano;
+* Tamanho do rio;
+* Velocidade do rio;
+* 8 parâmetros químicos:
+  + Valor máximo do pH;
+  + Valor mínimo de Oxigênio (O2);
+  + Valor máximo de Cloro (Cl);
+  + Valor médio de Nitratos (NO-3);
+  + Valor médio de Amônia (NH+4);
+  + Média de Ortofosfato (PO3-4);
+  + Média de Fosfaro (PO4); e,
+  + Média de Clorofila.
+* Associado a estes dados há a frequência de 7 algas prejudiciais.
+
+O segundo dataset possui 140 amostras com os dados acima, porém sem as frequências dos 7 tipos de algas prejudiciais. Nosso objetivo é fornecer um modelo que permita prever estes valores.
+
+## Instalando o pacote do livro
+
+Para a primeira execução do código, retire o "#" da linha abaixo:
+```{r}
+# install.packages('DMwR')
+
+```
+## Carregando e verificando os dados
+
+```{r}
+library(DMwR)
+str(algae)
+summary(algae)
+```
+
+```{r}
+head(algae)
+```
+
+Vamos obter abaixo um histograma de "mxPH". O parâmetro "prob = T" nos dá a probabilidade de cada intervalo de valor, caso contrário teríamos a contagem. 
+
+```{r}
+hist(algae$mxPH, prob = T)
+```
+```{r}
+hist(algae$mxPH)
+```
+O histograma abaixo, com o QQ Plot permite verificar a normalidade dos dados.
+
+Q Q Plots (Quantile-Quantile plots) are plots of two quantiles against each other. A quantile is a fraction where certain values fall below that quantile. For example, the median is a quantile where 50% of the data fall below that point and 50% lie above it. The purpose of Q Q plots is to find out if two sets of data come from the same distribution. A 45 degree angle is plotted on the Q Q plot; if the two data sets come from a common distribution, the points will fall on that reference line.
+
+Instale o pacote abaixo, se necessário.
+```{r}
+# install.packages('car')
+```
+
+
+```{r}
+library(car)
+par(mfrow=c(1,2)) # dividindo o painel do gráfico por 1 linha e 2 colunas
+hist(algae$mxPH, prob = T, xlab = "",
+     main = "Histograma do valor máximo de pH", ylim = 0:1)
+lines(density(algae$mxPH,na.rm = T))
+rug(jitter(algae$mxPH))
+qqPlot(algae$mxPH, main = "Normal QQ Plot de máximo de pH")
+par(mfrow=c(1,1))
+```
+A parte de baixo do histograna mostra a distribuição dos dados. Ali é possível ver dois valores baixos muito apartados dos outros valores... Possivelmente outliers.
+
+o QQ Plot mostra a distribuição normal (linha contínua azul) e um intervalo de confiança de 95% (linha tracejada azul). Note que alguns valores baixos estão fora do intervalo de confiança da distribuição normal.
+
+paramos na p. 47, vamos fazer o boxplot.
 
 
