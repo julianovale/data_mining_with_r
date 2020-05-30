@@ -1,0 +1,6 @@
+# Chapter 02 - Predicting Algae Blooms
+O objetivo deste estudo é realizar a predição de expansão de algas em rios da Europa.
+Foram coletadas diversas amostras de água em rios da Europa, durante aproximadamente um ano. Foram medidas diferentes propriedades químicas e a frequêncida de ocorrência de 7 tipos prejudiciais de algas. Outros dados foram, ainda, incluídos, como estação do ano, dimensão e velocidade do rio.
+Como a coleta e análise de propriedades químicas do rio pode ser feita de forma automática, rápida e barata e a análise biológica para identificar algas envolve pessoal altamente treinando, além de ser cara e lenta, a obtenção de modelos de predição do crescimento das algas a partir de parâmetros químicos é bastante oportuna.
+
+
