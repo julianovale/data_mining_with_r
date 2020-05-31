@@ -116,5 +116,16 @@ library(lattice)
 bwplot(size ~ a1, data = algae, ylab = "River Size", xlab = "Algal A1")
 ```
 
+Outra possibilidade interessante:
 
+```{r}
+#install.packages('Hmisc')
+library(Hmisc)
+bwplot(size ~ a1, data = algae, panel = panel.bpplot,
+       probs = seq(0.01, 0.49, by = 0.01), datadensity = T,
+       ylab = "River Size", xlab = "Algal 01")
+```
 
+Os pontos são os valores médios, os traços maiores, os quartis (1º e 3º)
+
+paramos na pág. 50 (64)
