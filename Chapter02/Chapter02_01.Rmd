@@ -105,6 +105,16 @@ O plot permite visualizar, o comando abaixo permite saber em qual linha está ou
 ```{r}
 algae[algae$NH4 > 15000, ]
 ```
-parei na página 49 (63)
+```{r}
+algae[!is.na(algae$NH4) & algae$NH4 > 15000, ]
+```
+
+Uma interessante investigação pode ser obtida, conforme abaixo da inspeção da distribuição de uma variável em relação a outra. No caso, tamanho do rio x ocorrência da alga A1. A instrução pode ser lida como: "plote A1 para cada tamanho de rio".
+
+```{r}
+library(lattice)
+bwplot(size ~ a1, data = algae, ylab = "River Size", xlab = "Algal A1")
+```
+
 
 
