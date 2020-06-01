@@ -2,4 +2,52 @@
 title: "Chapter02_01.Rmd"
 output: html_document
 ---
+# Trabalhando com valores desconhecidos
 
+```{r}
+library(DMwR)
+data(algae)
+summary(algae)
+```
+
+Muitas amostras no dataframe importado possuem valores desconhecidos em algumas variáveis, e certas técnicas não podem ser utilizada com valores faltantes. O que pode ser feito?
+
+* remover as amostras com valores desconhecidos;
+* preencher os valores desconhecidos a partir da exploração de correlações entre variáveis;
+* preencher os valores desconhecidos a partir da similaridade entre amostras; ou,
+* usar ferramentas capazes de lidar com os valores faltantes.
+
+## removendo 'cases' com valores desconhecidos
+
+Em primeiro lugar é importante visualizar esses 'cases', conforme segue:
+
+```{r}
+dim(algae) # para saber quantos são os cases no total.
+```
+```{r}
+algae[!complete.cases(algae),] # para verificar quais são as linhas com valores desconhecidos.
+```
+
+```{r}
+nrow(algae[!complete.cases(algae),]) # para saber quantas são as linhas com valores desconhecidos.
+```
+
+Para simplesmente excluir estes cases:
+
+```{r}
+algae1 <- na.omit(algae)
+algae1
+```
+
+```{r}
+dim(algae1)
+```
+
+Entretanto, se eu não quiser remover todos os "cases" com valores desconhecidos, mas só aqueles em que faltam tantos valores que o manuseio é inviável, como os cases 62 e 199 que possuem mais de 6 NA, pode ser feito o seguinte:
+
+```{r}
+algae2 <- algae[-c(62, 199), ]
+algae2
+```
+
+paramos na página 54 (68), vamor ver o comando apply()
