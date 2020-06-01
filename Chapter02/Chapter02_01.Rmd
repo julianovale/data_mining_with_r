@@ -128,4 +128,7 @@ bwplot(size ~ a1, data = algae, panel = panel.bpplot,
 
 Os pontos são os valores médios, os traços maiores, os quartis (1º e 3º)
 
-paramos na pág. 50 (64)
+```{r}
+stripplot(season ~ a3|mnO2, data = algae[!is.na(algae$mnO2),])
+```
+
