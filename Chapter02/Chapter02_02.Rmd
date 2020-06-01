@@ -50,4 +50,4 @@ algae2 <- algae[-c(62, 199), ]
 algae2
 ```
 
-paramos na página 54 (68), vamor ver o comando apply()
+paramos na página 54 (68), agora vamor ver o comando apply()
