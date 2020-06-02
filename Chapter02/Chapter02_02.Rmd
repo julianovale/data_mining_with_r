@@ -50,4 +50,67 @@ algae2 <- algae[-c(62, 199), ]
 algae2
 ```
 
-paramos na página 54 (68), agora vamor ver o comando apply()
+Quando se tem um número muito alto de NAs e fica inviável avaliar visualmente, pode-se utilizar o comando abaixo para se ter uma visão geral do número de NAs por linha:
+
+```{r}
+apply(algae, 1, function(x) sum(is.na(x)))
+```
+
+```{r}
+manyNAs(algae, 0.2) # essa função faz parte da biblioteca do livro, ela mostra quais linhas possuem muitos NAs... o parâmetro 0.2 é calibrável... 0.1 traz mais cases.
+```
+```{r}
+manyNAs(algae, 0.1)
+```
+
+O comando manyNAs() pode ser usado para excluir os cases (linhas) com muitos NAs. Veja abaixo:
+
+```{r}
+algae3 <- algae[-manyNAs(algae, 0.1), ]
+algae3
+```
+
+## Preenchendo NAs com os valores mais frequentes
+
+Veja abaixo, a linha 48 possui um NA em 'mxPH'.
+
+```{r}
+algae[!complete.cases(algae),]
+```
+
+Para preencher esse NA com o valor médio de "mxPH", proceda conforme abaixo:
+
+```{r}
+algae[48, 'mxPH'] <- mean(algae$mxPH, na.rm = T) # o na.rm = T faz desconsiderar qualquer NA na média calculada.
+algae[48, 'mxPH'] # Veja! Foi preenchido com o valor 8.011734
+```
+
+Mas pode ser interessante preencher todos os NAs num só comando ao invés de trabalhar caso a caso, portanto o que se pode fazer é:
+
+```{r}
+algae[is.na(algae$Chla), "Chla"] <- median(algae$Chla, na.rm = T)
+algae
+```
+
+Como o variável "Chla" possui muitos valores extremos, a média não é uma boa medida de posição central, então optou-se pela mediana.
+
+A função centralImputation() disponível no pacote do livro, também pode ser utilizada preenchendo os NAs com uma centralidade estatística. Usa a mediana para preencher valores numéricos e a moda para preencher valores categóricos.
+
+Vamos resetar o dataframe algae e rodar o comando.
+
+```{r}
+data(algae) # reseta o dataframe
+algae <- algae[-manyNAs(algae),]
+algae <- centralImputation(algae)
+algae
+```
+
+vamos ver se deu certo:
+
+```{r}
+algae[!complete.cases(algae),]
+```
+
+Deu!!! Dataframe completamente preenchido! 
+
+parei na pág. 56 (70), item 2.5.3
