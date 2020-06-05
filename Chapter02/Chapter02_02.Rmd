@@ -113,4 +113,28 @@ algae[!complete.cases(algae),]
 
 Deu!!! Dataframe completamente preenchido! 
 
-parei na pág. 56 (70), item 2.5.3
+```{r}
+data(algae) # reseta o dataframe
+```
+
+Uma alternativa para obter valores menos tendenciosos que os valores médios no preenchimento de valores desconhecidos é a exploração de correlações entre as variáveis. 
+Para obter as correlações pode-se usar o comando abaixo:
+
+```{r}
+cor(algae[, 4:18], use = "complete.obs") # foram utilizadas todas as linhas e as colunas 4 a 18, porque as 3 primeiras colunas são variáveis categóricas. O atribuito 'use = "complete.obs"' diz ao R para desconsiderar os valores desconhecidos.
+
+```
+
+A matriz resultante mostra as correlações entre as variáveis, o que auxiliará no preenchimento dos valores desconhecidos.
+
+Para deixar um pouco mais "legível", pode-se usar a linha abaixo:
+
+```{r}
+symnum(cor(algae[,4:18], use = 'complete.obs'))
+```
+
+Visualização interessante que traz um caracter especial indicando uma faixa de valor de correlação. Entretanto, a maioria dos casos traz uma correlação irrelevante.
+
+Parei na página 58 (72), na fase de geração do modelo linear.
+
+
