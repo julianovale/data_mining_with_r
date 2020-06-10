@@ -194,6 +194,6 @@ Testando a função criada:
 fillPO4(6.5)
 ```
 
-parei na página 59 (73)
+parei na página 59 (73) no histograma.
 
 
