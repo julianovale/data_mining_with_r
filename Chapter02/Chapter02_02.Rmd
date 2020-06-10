@@ -135,6 +135,65 @@ symnum(cor(algae[,4:18], use = 'complete.obs'))
 
 Visualização interessante que traz um caracter especial indicando uma faixa de valor de correlação. Entretanto, a maioria dos casos traz uma correlação irrelevante.
 
-Parei na página 58 (72), na fase de geração do modelo linear.
+## Geração do modelo linear para preenchimento
+
+A variável PO4 será preenchida a partir da correlação com oPO4. A amostra "28" possui um valor desconhecido na variável PO4, portanto será preenchida.
+
+Primeiro passo: gerar o modelo linear.
+
+```{r}
+data(algae) # refresca as transformações nos dados.
+algae <- algae[-manyNAs(algae),]
+lm(PO4 ~ oPO4, data = algae)
+```
+
+Então a fórmula resultante é: 
+
+PO4 = 42.897 + 1.293 * oPO4
+
+Para preencher a amostra 28 iremos proceder conforme abaixo:
+
+```{r}
+algae[28, "PO4"] <- 42.897 + 1.293 * algae[28, "oPO4"]
+```
+
+```{r}
+algae[28, "PO4"]
+```
+
+```{r}
+algae[!complete.cases(algae),]
+```
+
+Note que agora a linha 28 está completa.
+
+Para completar todas as amostras referentes à variável PO4, proceder conforme abaixo:
+
+```{r}
+data(algae) # refresca os valores
+algae <- algae[-manyNAs(algae),] # exclui amostras com muitos NAs
+fillPO4 <- function(oPx) {  # isso cria a função "fillPO4"
+  if (is.na(oPx))
+    return(NA)
+  else return(42.897 + 1.293 * oPx)
+}
+algae[is.na(algae$PO4), "PO4"] <- sapply(algae[is.na(algae$PO4),"oPO4"], fillPO4) # aqui se aplica a função "fillPO4" # sapply é uma metafunção que tem um vetor no primeiro argumento e uma função no segundo... é autoexplicativo o funcionamento.
+```
+
+Testando:
+
+```{r}
+algae[28, "PO4"]
+```
+
+Deu certo!
+
+Testando a função criada:
+
+```{r}
+fillPO4(6.5)
+```
+
+parei na página 59 (73)
 
 
