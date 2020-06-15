@@ -2,7 +2,7 @@
 title: "Chapter02_03.Rmd"
 output: html_document
 ---
-# Trabalhando com valores desconhecidos
+# Obtendo modelos de predição
 
 ```{r}
 library(DMwR)
