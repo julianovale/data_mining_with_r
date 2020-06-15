@@ -194,6 +194,38 @@ Testando a função criada:
 fillPO4(6.5)
 ```
 
-parei na página 59 (73) no histograma.
+Podemos explorar, ainda, correlações os valores desconhecidos e as variáveis categóricas nominais. Podemos utilizar para isso, os histogramas contidos no pacote Lattice. Vejamos:
 
+```{r}
+histogram(~mxPH | season, data = algae)
+```
+
+A ordem das estações está não-natural, pode-se resolver da seguinte forma:
+
+```{r}
+algae$season <- factor(algae$season, levels = c("spring", "summer", "autumn", "winter"))
+histogram(~mxPH | season, data = algae)
+```
+
+Não parece existir uma correlação com estação. Vamos explorar as outras variáveis categóricas.
+
+```{r}
+histogram(~mxPH | size * speed, data = algae)
+```
+
+```{r}
+stripplot(size ~ mxPH | speed, data = algae, jitter = T) # lembrando que "jitter = T" causa uma pequena perturbação nos valores, evitando que a plotagem fique sobreposta. Facilita a visualização.
+```
+
+## Preenchendo os valores desconhecidos pela exploração de similaridade  entre as amostras
+
+```{r}
+data(algae)
+algae <- algae[-manyNAs(algae),] # excluindo amostras com muitos NAs
+algae
+```
+
+O método assume que, se duas amostras são similares e uma delas possui um valor desconhecido, há uma alta probabilidade que esse valor desconhecido seja similar ao valor (conhecido) da outra amostra. É tremendamente intuitivo, mas precisamos entender o que é similaridade.
+
+Para "similaridade" podemos utilizar a noção de Distância Euclidiana. 
 
