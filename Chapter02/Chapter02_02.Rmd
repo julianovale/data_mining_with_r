@@ -1,5 +1,5 @@
 ---
-title: "Chapter02_01.Rmd"
+title: "Chapter02_02.Rmd"
 output: html_document
 ---
 # Trabalhando com valores desconhecidos
