@@ -229,3 +229,40 @@ O método assume que, se duas amostras são similares e uma delas possui um valo
 
 Para "similaridade" podemos utilizar a noção de Distância Euclidiana. 
 
+d(x, y) = sqrt(sum(Xi - Yi)^2)
+
+Será usado uma variante da distância euclidiana para encontrar os k vizinhos mais próximos de cada amostra. A função knnImputation() faz parte do pacote do livro.
+
+Essa variante considera, se:
+
+i é categórico e V1 != V2, então 1
+i é categórico e V1 = V2, então 0
+i é numérico (V1 - V2)^2
+
+Vejamos:
+
+```{r}
+algae <- knnImputation(algae, k = 10)
+algae
+```
+
+```{r}
+algae[!complete.cases(algae),]
+```
+
+Veja acima, todos os NA foram preenchidos.
+
+Vamos usar outro método, utilizando a mediana:
+
+
+```{r}
+data(algae)
+algae <- algae[-manyNAs(algae),]
+algae <- knnImputation(algae, k = 10, meth = "median")
+```
+
+```{r}
+algae[!complete.cases(algae),]
+```
+
+
