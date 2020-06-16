@@ -8,3 +8,37 @@ output: html_document
 library(DMwR)
 data(algae)
 ```
+O principal objetivo desse estudo é obter predições para os valores das frequências das 7 algas num conjunto de 140 amostras. Como as frequências são números, esse é um problema de regressão. 
+
+Esse procedimento pode ser utilizado para prever os valores das variáveis dependentes a partir de observações futuras das variáveis independentes ou para obter um melhor entendimento das interações entre as variáveis em nosso problema.
+
+Neste caso, usaremos **Regressão Linear Múltipla** e **Árvores de Regressão**. Estes dois modelos são boas escolhas pois fazem diferentes suposições acerca da forma da função de regressão.
+
+Como a regressão linear não consegue lidar com valores desconhecidos e as árvores de regressão lidam bem com essas lacunas, a preparação dos dados será diferente para cada método.
+
+## Regressão Linear Múltipla
+
+Neste caso será necessário eliminar os valores desconhecidos. Será efetuado o procedimento final da sessão anterior (Chapter02_02):
+
+```{r}
+algae <- algae[-manyNAs(algae),]
+clean.algae <- knnImputation(algae, k = 10)
+```
+
+o DataFrame "clean.algae" não possui valores desconhecidos. Foram inseridos utilizando o método k vizinhos mais próximos discutidos no final da sessão anterior.
+
+```{r}
+clean.algae
+```
+
+Vamos obter aqui o modelo de regressão linear para a variável "a1", considerando as primeiras 12 variáveis como independentes.
+
+```{r}
+lm.a1 <- lm(a1 ~ ., data = clean.algae[, 1:12])
+```
+
+```{r}
+summary(lm.a1)
+```
+
+Escrever aqui a explicação das variáveis dummy, p. 65 (79)... É interessante. Continue daí. 
