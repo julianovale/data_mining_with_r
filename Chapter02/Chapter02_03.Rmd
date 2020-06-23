@@ -41,4 +41,59 @@ lm.a1 <- lm(a1 ~ ., data = clean.algae[, 1:12])
 summary(lm.a1)
 ```
 
-Escrever aqui a explicação das variáveis dummy, p. 65 (79)... É interessante. Continue daí. 
+Para trabalhar em modelos lineares com as variáveis categóricas nominais, o R cria novas variáveis "dummy", binárias (0 ou 1).
+
+Por exemplo: "season" é uma variável que pode assumir 4 diferentes valores, a saber, "spring", "summer", "autumn" ou "winter". O R cria as seguintes variáveis: "seasonspring", "seasonsummer", "seasonautumn" e "seasonwinter" e atribui 0 ou 1 para indicar "ausência" ou "presença" respectivamente.
+
+Coisas importantes a serem avaliadas no sumário acima: 
+
+- R^2 ajustado: quanto mais próximo de 1 melhor; 
+- F-statistic que testa a hipótese nula de não haver dependência, ou seja, para termos 95% de certeza de que não há dependência, o valor-p deve ser maior que 0,05... neste caso, é muito menor 2.444e-12, assim, pode-se concluir que Há dependência entre as variáveis.
+
+Neste caso temos um impasse: o coeficiente de explicação R^2 ajustado é muito baixo, aprox. 32%; mas a estatística F não nos permite descartar a dependência. Precisamos nos aprofundar na análise e elimar as variáveis não relacionadas (ruídos)... a técnica é conhecida como "Backward Elimination"
+
+## Backward elimination
+
+1º passo: aplicar uma análise de variância:
+
+```{r}
+anova(lm.a1)
+```
+
+Essa análise mostra que a variável "season" é a que menos contribui para a redução do ajuste do modelo. Será eliminada.
+
+
+```{r}
+lm2.a1 <- update(lm.a1, . ~ . - season)
+summary(lm2.a1)
+```
+
+O ajuste aumentou um pouco, para 32,7%, mas ainda é pequeno... 
+
+vamos comparar os dois modelos utilizando uma análise de variância:
+
+```{r}
+anova(lm.a1, lm2.a1)
+```
+
+A soma do erro quadrático dimunuiu (-448), mas a comparação  mostra que a diferença não é significativa, um valor de 0,6971 nos diz que apenas temos algo em torno de 30% de confiança (1 - 0,6971) de que há uma diferença.
+
+Para verificar que outras variáveis poderíamos excluir, poderíamos fazer uma ANOVA de lm2.a1 e assim por diante, mas o R possui uma função que faz todo esse processo de forma automática.
+
+Vejamos:
+
+```{r}
+final.lm <- step(lm.a1)
+```
+```{r}
+summary(final.lm)
+```
+
+A explicação desse modelo ainda assim não é interessante, aproximados 33%. Neste caso, temos um sinal de que a presumida linearidade do modelo não é adequada e deve ser descartada.
+
+
+## Árvores de regressão
+
+Parei na p. 71 (85)
+
+
