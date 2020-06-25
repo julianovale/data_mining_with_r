@@ -91,9 +91,71 @@ summary(final.lm)
 
 A explicação desse modelo ainda assim não é interessante, aproximados 33%. Neste caso, temos um sinal de que a presumida linearidade do modelo não é adequada e deve ser descartada.
 
+Entretanto cabe a explicação da equação. Seria assim:
+
+a1 = 57.28555 + 2.80050 * sizemedium + 10.40636 * sizesmall - 3.97076 * mxPH - 0.05227 * Cl - 0.89529 * NO3 - 0.05911 * PO4
 
 ## Árvores de regressão
 
-Parei na p. 71 (85)
+Como o método "árvores de regressão" lida bem com valores desconhecidos, só precisamos remover as amostras 62 e 199 por serem muito incompletas.
+
+Vamos lá:
+
+```{r}
+library(rpart)
+data(algae)
+algae <- algae[-manyNAs(algae),]
+rt.a1 <- rpart(a1 ~ ., data = algae[ , 1:12])
+```
+
+O pacote "rpart" implementa "árvores de regressão" no R. A sintaxe para obter o modelo é simular ao "lm".
+
+Vamos ver os resultados:
+
+```{r}
+rt.a1
+```
+
+Vamos entender isso:
+
+A "árvore de regressão" fornece uma hieraquia de testes lógicos sobre algumas das variáveis independentes (o método seleciona automaticamente as mais relevantes). 
+
+É interessantíssimo o modelo... num momento pode ser interessante traduzir isso:
+
+"A regression tree is a hierarchy of logical tests on some of the explanatory
+variables. Tree-based models automatically select the more relevant variables;
+thus, not all variables need to appear in the tree. A tree is read from the root
+node that is marked by R with the number 1. R provides some information
+of the data in this node. Namely, we can observe that we have 198 samples
+(the overall training data used to obtain the tree) at this node, that these
+198 samples have an average value for the frequency of algal a1 of 16.99, and
+that the deviance30 from this average is 90401.29. Each node of a tree has two
+branches. These are related to the outcome of a test on one of the predictor
+variables. For instance, from the root node we have a branch (tagged by R
+with \2)") for the cases where the test \PO4≥43.818" is true (147 samples);
+and also a branch for the 51 remaining cases not satisfying this test (marked
+by R with \3)"). From node 2 we have two other branches leading to nodes 4
+and 5, depending on the outcome of a test on Cl. This testing goes on until
+a leaf node is reached. These nodes are marked with asterisks by R. At these
+leaves we have the predictions of the tree. This means that if we want to use
+a tree to obtain a prediction for a particular water sample, we only need to
+follow a branch from the root node until a leaf, according to the outcome of
+the tests for this sample. The average target variable value found at the leaf
+we have reached is the prediction of the tree."
 
 
+É possível ver isso de forma gráfica... No pacote "DMwR" existe a função prettyTree() para essa finalidade
+
+```{r}
+prettyTree(rt.a1)
+```
+
+A função summary() também pode ser aplicada. Vejamos:
+
+```{r}
+summary(rt.a1)
+```
+
+Ver como evitar o "sobreajuste". p. 74 (88) a partir de "The function rpart() that we have used to obtain our tree only grows the
+tree, stopping when certain criteria are met. Namely, the tree stops growing
+whenever (1) the decrease in the d"
